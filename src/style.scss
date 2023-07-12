@@ -1,0 +1,77 @@
+.game {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .game-title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .board {
+    padding: 10px;
+
+    .board-row {
+      display: flex;
+    }
+
+    .square {
+      $size: 45px;
+
+      cursor: pointer;
+      line-height: $size;
+      width: $size;
+      height: $size;
+      background: #fff;
+      border: 1px solid #999;
+      float: left;
+      font-size: $size - 15;
+      font-weight: bold;
+      margin-right: -1px;
+      margin-top: -1px;
+      padding: 0;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .square.no-drop {
+      cursor: no-drop;
+    }
+    .square.win-square {
+      color: #2196f3;
+    }
+  }
+
+  .controller {
+    padding: 10px;
+    input {
+      width: 50px;
+      padding: 0px 10px;
+    }
+    .label {
+      margin-right: 10px;
+    }
+    
+  }
+
+  .history {
+    padding: 10px;
+
+    .items {
+      display: flex;
+      flex-direction: column;
+    }
+
+    button {
+      margin-bottom: 10px;
+      transition: all 0.4s;
+      cursor: pointer;
+    }
+
+    .current {
+      font-weight: 600;
+    }
+  }
+}
