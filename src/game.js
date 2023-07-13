@@ -1,6 +1,6 @@
 import React, { useState,useEffect, useMemo } from "react";
 import Controller from "./controller";
-// import Board from "./board";
+import Board from "./gameContainer";
 // import History from "./history";
 import "./style.scss";
 import { useMultiplayerState, insertCoin, myPlayer, usePlayersList,onPlayerJoin } from 'playroomkit';
@@ -145,6 +145,7 @@ useEffect(() => {
       });
     };
 
+
     return calculateY() || calculateX() || calculateL() || calculateR();
   }
 
@@ -197,17 +198,17 @@ useEffect(() => {
 
   return (
     <div className="game">
-      <h1 className="game-title">
+      {/* <h1 className="game-title">
         SPOT {state.winPlayer ? "游戏结束" : ""}
-      </h1>
+      </h1> */}
       {/* <History
         history={state.history}
         stepIndex={state.stepIndex}
         initGame={initGame}
         jumpTo={jumpTo}
       ></History> */}
-      {/* <Board {...state} squareClick={squareClick}></Board> */}
-      <Controller
+      <Board {...state} squareClick={squareClick}></Board>
+      {/* <Controller
         players={playerSymbols}
         width={state.width}
         height={state.height}
@@ -215,7 +216,7 @@ useEffect(() => {
         winPlayer={state.winPlayer}
         nextPlayer={state.nextPlayer}
         change={boardSizeChange}
-      ></Controller>
+      ></Controller> */}
     </div>
   );
 }
