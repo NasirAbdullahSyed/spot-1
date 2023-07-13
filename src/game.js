@@ -47,23 +47,23 @@ function Game(props) {
   const myPlayerState = myPlayer();
 const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
 
-useEffect(() => {
-  if (myPlayerState && !myPlayerState.getState("symbol")) {
-    const assignedSymbols = players.map(player => player.state.symbol);
-    const remainingSymbols = alphabetPool.split('').filter(symbol => !assignedSymbols.includes(symbol));
+// useEffect(() => {
+//   if (myPlayerState && !myPlayerState.getState("symbol")) {
+//     const assignedSymbols = players.map(player => player.state.symbol);
+//     const remainingSymbols = alphabetPool.split('').filter(symbol => !assignedSymbols.includes(symbol));
 
-    if (remainingSymbols.length > 0) {
-      const randomSymbol = remainingSymbols[Math.floor(Math.random() * remainingSymbols.length)];
-      myPlayerState.setState("symbol", randomSymbol);
-      console.log("myPlayerState", myPlayerState.getState("symbol"));
-    }
-  }
-}, [myPlayerState]);
+//     if (remainingSymbols.length > 0) {
+//       const randomSymbol = remainingSymbols[Math.floor(Math.random() * remainingSymbols.length)];
+//       myPlayerState.setState("symbol", randomSymbol);
+//       console.log("myPlayerState", myPlayerState.getState("symbol"));
+//     }
+//   }
+// }, [myPlayerState]);
 
 
-  useEffect(() => {
-    initializeSdk();
-  }, []);
+//   useEffect(() => {
+//     initializeSdk();
+//   }, []);
 
   function getInitState() {
     // const players = ["o", "x", "z", "a"] // Add additional players here
