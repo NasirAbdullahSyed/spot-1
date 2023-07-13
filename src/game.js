@@ -1,6 +1,7 @@
 import React, { useState,useEffect, useMemo } from "react";
 import Controller from "./controller";
-import Board from "./gameContainer";
+//import Board from "./gameContainer"; -changes
+import BoxContainer from "./uiScreen"; 
 // import History from "./history";
 import "./style.scss";
 import { useMultiplayerState, insertCoin, myPlayer, usePlayersList,onPlayerJoin } from 'playroomkit';
@@ -207,7 +208,7 @@ const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
         initGame={initGame}
         jumpTo={jumpTo}
       ></History> */}
-      <Board {...state} squareClick={squareClick}></Board>
+      <BoxContainer {...state} squareClick={squareClick}></BoxContainer>
       {/* <Controller
         players={playerSymbols}
         width={state.width}
