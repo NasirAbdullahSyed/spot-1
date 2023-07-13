@@ -12,6 +12,8 @@ const BoxContainer = () => {
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
 
   useEffect(() => {
+    
+    //for timer
     let intervalId;
 
     if (currentScreen === 'game' && timer > 0 && moves > 0 && !gameOver) {
@@ -33,6 +35,7 @@ const BoxContainer = () => {
     setCurrentScreen('game');
   };
 
+  //function for what screen is displayed when rules button is clicked
   const handleRulesClick = () => {
     if (currentScreen === 'game') {
       setPreviousScreen('game');
@@ -42,6 +45,7 @@ const BoxContainer = () => {
     setCurrentScreen('rules');
   };
 
+  //function to handle back button on rules screen, and quit button on game screen
   const handleBackClick = () => {
     if (currentScreen === 'rules') {
       if (previousScreen === 'start') {
@@ -52,7 +56,7 @@ const BoxContainer = () => {
     } else if (currentScreen === 'game') {
       if (gameOver) {
         setGameOver(false);
-        setCurrentScreen('start');
+        setCurrentScreen('start'); //back to start screen 
         setTimer(10);
         setMoves(5);
         setProgress(0);
@@ -67,19 +71,31 @@ const BoxContainer = () => {
     }
   };
   
+  //to display circle on the images
   const handleImageClick = (event) => {
-    if (!gameOver) {
+    if (!gameOver) { //only registers the event if game is not over
+
+      //the offsets get the image coordinates
       const offsetX = event.clientX;
       const offsetY = event.clientY;
   
+      //update moves & progress
+      //implement logic here to update progress on only correct moves
       setMoves((prevMoves) => Math.max(prevMoves - 1, 0));
       setProgress((prevProgress) => prevProgress + 1);
   
+      //to keep track of the clicked coordinates
       const newCoordinates = [
         { x: offsetX, y: offsetY, imageId: 'image1' },
         { x: offsetX, y: offsetY, imageId: 'image2' }
       ];
   
+      //this clickcooridnates will have the circle drawn over them
+      //cuurently only green circles are being drawb
+      //need to give correct and incorrect coordinates so circle
+      //can be either green or red according to correct and incorredt
+      //progress will update only with green circle,
+      //moves will decrease with all circles (or only red?)
       setClickedCoordinates((prevCoordinates) => [...prevCoordinates, ...newCoordinates]);
     }
   };
@@ -121,11 +137,13 @@ const BoxContainer = () => {
                 <ReactImageZoom
                   width={300}
                   height={300}
-                  zoomWidth={400}
+                  zoomWidth={300}
                   img={process.env.PUBLIC_URL + '/croc1.jpg'}
                   zoomStyle={`z-index: 1000; position: absolute; bottom: 70%; top: 0; transform: translateX(10px);`}
                 />
+          
                 {clickedCoordinates.map((coordinate, index) => {
+                  //according to clicked coordinates, a div displayes a circle over them 
                   if (coordinate.imageId === 'image1') {
                     return (
                       <div key={index} className="circle" style={{ left: coordinate.x, top: coordinate.y }} />
@@ -140,7 +158,7 @@ const BoxContainer = () => {
                 <ReactImageZoom
                   width={300}
                   height={300}
-                  zoomWidth={400}
+                  zoomWidth={200} //confirm zoom width
                   img={process.env.PUBLIC_URL + '/croc2.jpg'}
                   zoomStyle={`z-index: 1000; position: absolute; bottom: 70%; top: 0; transform: translateX(10px);`}
                 />
