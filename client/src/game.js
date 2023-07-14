@@ -5,6 +5,10 @@ import Board from "./gameContainer";
 import "./style.scss";
 import { useMultiplayerState, insertCoin, myPlayer, usePlayersList,onPlayerJoin } from 'playroomkit';
 
+// Image Processing
+import ImageUploader from "./ImageUploader";
+
+
 function Game(props) {
   const unsortedPlayers = usePlayersList();
 
@@ -207,7 +211,7 @@ const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
         initGame={initGame}
         jumpTo={jumpTo}
       ></History> */}
-      <Board {...state} squareClick={squareClick}></Board>
+      {/* <Board {...state} squareClick={squareClick}></Board> */}
       {/* <Controller
         players={playerSymbols}
         width={state.width}
@@ -217,6 +221,8 @@ const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
         nextPlayer={state.nextPlayer}
         change={boardSizeChange}
       ></Controller> */}
+      <h1>App</h1>
+      <ImageUploader />
     </div>
   );
 }
