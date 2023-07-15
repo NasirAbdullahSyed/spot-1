@@ -1,14 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { storage, imageRef } from './firebase/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import axios from 'axios';
 const ImageUploader = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [originalImageURL, setOriginalImageURL] = useState(null);
+  const [modifiedImageURL, setModifiedImageURL] = useState(null);
 
-  const handleImageUpload = async() => {
+  const handleImageUpload = async() => 
+  {
     if (selectedImage) {
-        await uploadBytes(ref(imageRef, selectedImage.name), selectedImage);
-        const downloadURL = await getDownloadURL(ref(storage, ref(imageRef, selectedImage.name).fullPath));
-        console.log(downloadURL);
+      
+      // Ref Path
+      const storageRef = ref(storage, imageRef);
+      const imageRefPath = ref(storageRef, selectedImage.name);
+      const modifiedImageRefPath = ref(storageRef, 'modified_' + selectedImage.name);
+      
+      // Upload image
+      await uploadBytes(imageRefPath, selectedImage);
+      
+      // Get Download URL for image
+      const imageURL1 = await getDownloadURL(imageRefPath);
+      setOriginalImageURL(imageURL1);
+      
+      // Process image
+      const response = await axios.post('/process-image', {
+        originalImageURL: imageURL1,
+        originalImageName: selectedImage.name,
+        storageRef: storageRef,
+      });
+          
+      // Upload Processed Image 
+      const proc_image = response.data;
+      uploadBytes(imageRefPath, proc_image);
+      const imageURL2 = getDownloadURL(imageRefPath);
+      setModifiedImageURL(imageURL2);
     }
   };
 
@@ -21,6 +47,12 @@ const ImageUploader = () => {
     <div>
       <input type="file" onChange={handleImageChange} />
       <button onClick={handleImageUpload}>Upload Image</button>
+      {modifiedImageURL && (
+        <div>
+          <h2>Initial Image:</h2>
+          <img src={modifiedImageURL} alt="Initial Image" />
+        </div>
+      )}
     </div>
   );
 };
