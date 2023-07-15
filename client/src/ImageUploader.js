@@ -14,7 +14,6 @@ const ImageUploader = () => {
       // Ref Path
       const storageRef = ref(storage, imageRef);
       const imageRefPath = ref(storageRef, selectedImage.name);
-      const modifiedImageRefPath = ref(storageRef, 'modified_' + selectedImage.name);
       
       // Upload image
       await uploadBytes(imageRefPath, selectedImage);
@@ -50,7 +49,7 @@ const ImageUploader = () => {
       {modifiedImageURL && (
         <div>
           <h2>Initial Image:</h2>
-          <img src={modifiedImageURL} alt="Initial Image" />
+          {/* <img src={modifiedImageURL} alt="Initial Image" /> */}
         </div>
       )}
     </div>
