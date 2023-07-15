@@ -11,32 +11,44 @@ const BoxContainer = () => {
   const [previousScreen, setPreviousScreen] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
 
 
-  /*
-    const [selectedEmoji, setSelectedEmoji] = useState(null);
-     let emoji = null;
+  //emojis for taps
+     let emoji = "😃";
   let emojiColor = null;
 
-  if (moves === 5) {
-    emoji = '😃';
-    emojiColor = 'darkgreen';
-  } else if (moves === 4) {
-    emoji = '😜';
-    emojiColor = 'lightgreen';
-  } else if (moves === 3) {
-    emoji = '😅';
-    emojiColor = 'yellow';
-  } else if (moves === 2) {
-    emoji = '😳';
-    emojiColor = 'orange';
-  } else if (moves === 1) {
-    emoji = '🫣';
-    emojiColor = 'red';
-  }
+  if(moves === 5)
+    emoji = "😃";
+  else if (moves === 4)
+    emoji = "😜";
+  else if(moves === 3)
+    emoji = "😅";
+  else if(moves === 2)
+    emoji = "😳";
+  else if(moves === 1)
+    emoji = "😔";
+
+    //re-rendering issues if using states
+  // if (moves === 5) {
+  //   setSelectedEmoji('😃');
+  //   emojiColor = 'darkgreen';
+  // } else if (moves === 4) {
+  //   setSelectedEmoji('😜');
+  //   emojiColor = 'lightgreen';
+  // } else if (moves === 3) {
+  //   setSelectedEmoji ('😅');
+  //   emojiColor = 'yellow';
+  // } else if (moves === 2) {
+  //   setSelectedEmoji('😳');
+  //   emojiColor = 'orange';
+  // } else if (moves === 1) {
+  //   setSelectedEmoji('🫣');
+  //   emojiColor = 'red';
+  // }
 
  //display emoji with moves
-  */
+  
 
   useEffect(() => {
     let intervalId;
@@ -158,13 +170,13 @@ const BoxContainer = () => {
             <div className="timerButtons flex justify-between w-full pb-6">
               <ProgressBar
                 className="bg-gradient-to-r from-green-400 via-green-600 to-transparent bg-repeat-x bg-size-4 rounded-md w-32"
-                customLabel="Taps"
+                customLabel= {emoji}
                 completed={moves}
                 minCompleted={0}
                 maxCompleted={5}
               />
               <Button className={`text-white bg-blue-400 rounded-md w-32 timer ${timer <= 5 && timer > 0 ? 'shake' : ''}`} onClick={() => console.log('Timer button clicked')}>
-                {timer <= 0 ? 'Time Up' : `Timer: ${timer}s`} ⏰
+                {timer <= 0 ? 'Time Up' : ` ${timer}s`} ⏰
               </Button>
             </div>
           </div>
@@ -222,7 +234,7 @@ const BoxContainer = () => {
             <div className="bottom-buttons flex justify-between w-full px-8 pt-6 md:justify-start">
               <ProgressBar
                 className="bg-gradient-to-r from-green-400 via-green-600 to-transparent bg-repeat-x bg-size-4 rounded-full w-full"
-                customLabel="Progress"
+                customLabel="🏆"
                 completed={progress}
                 minCompleted={0}
                 maxCompleted={5}
