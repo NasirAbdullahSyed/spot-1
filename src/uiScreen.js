@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactImageZoom from 'react-image-zoom';
-import './BoxContainer.css';
+import ProgressBar from "@ramonak/react-progress-bar";
+import './index.css';
 
 const BoxContainer = () => {
   const [timer, setTimer] = useState(10);
@@ -11,14 +12,38 @@ const BoxContainer = () => {
   const [gameOver, setGameOver] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
 
+
+  /*
+    const [selectedEmoji, setSelectedEmoji] = useState(null);
+     let emoji = null;
+  let emojiColor = null;
+
+  if (moves === 5) {
+    emoji = '😃';
+    emojiColor = 'darkgreen';
+  } else if (moves === 4) {
+    emoji = '😜';
+    emojiColor = 'lightgreen';
+  } else if (moves === 3) {
+    emoji = '😅';
+    emojiColor = 'yellow';
+  } else if (moves === 2) {
+    emoji = '😳';
+    emojiColor = 'orange';
+  } else if (moves === 1) {
+    emoji = '🫣';
+    emojiColor = 'red';
+  }
+
+ //display emoji with moves
+  */
+
   useEffect(() => {
-    
-    //for timer
     let intervalId;
 
     if (currentScreen === 'game' && timer > 0 && moves > 0 && !gameOver) {
       intervalId = setInterval(() => {
-        setTimer(prevTimer => prevTimer - 1);
+        setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
     }
 
@@ -35,7 +60,6 @@ const BoxContainer = () => {
     setCurrentScreen('game');
   };
 
-  //function for what screen is displayed when rules button is clicked
   const handleRulesClick = () => {
     if (currentScreen === 'game') {
       setPreviousScreen('game');
@@ -45,7 +69,6 @@ const BoxContainer = () => {
     setCurrentScreen('rules');
   };
 
-  //function to handle back button on rules screen, and quit button on game screen
   const handleBackClick = () => {
     if (currentScreen === 'rules') {
       if (previousScreen === 'start') {
@@ -56,7 +79,7 @@ const BoxContainer = () => {
     } else if (currentScreen === 'game') {
       if (gameOver) {
         setGameOver(false);
-        setCurrentScreen('start'); //back to start screen 
+        setCurrentScreen('start');
         setTimer(10);
         setMoves(5);
         setProgress(0);
@@ -70,102 +93,123 @@ const BoxContainer = () => {
       }
     }
   };
-  
-  //to display circle on the images
-  const handleImageClick = (event) => {
-    if (!gameOver) { //only registers the event if game is not over
 
-      //the offsets get the image coordinates
+  const handleImageClick = (event) => {
+    if (!gameOver) {
       const offsetX = event.clientX;
       const offsetY = event.clientY;
-  
-      //update moves & progress
-      //implement logic here to update progress on only correct moves
+
       setMoves((prevMoves) => Math.max(prevMoves - 1, 0));
       setProgress((prevProgress) => prevProgress + 1);
-  
-      //to keep track of the clicked coordinates
+
       const newCoordinates = [
         { x: offsetX, y: offsetY, imageId: 'image1' },
-        { x: offsetX, y: offsetY, imageId: 'image2' }
+        { x: offsetX, y: offsetY, imageId: 'image2' },
       ];
-  
-      //this clickcooridnates will have the circle drawn over them
-      //cuurently only green circles are being drawb
-      //need to give correct and incorrect coordinates so circle
-      //can be either green or red according to correct and incorredt
-      //progress will update only with green circle,
-      //moves will decrease with all circles (or only red?)
+
       setClickedCoordinates((prevCoordinates) => [...prevCoordinates, ...newCoordinates]);
     }
   };
-  
-  
-  
-  
+
+  const handleTimerShake = () => {
+    const timerElement = document.querySelector('.timer');
+    timerElement.classList.add('shake');
+
+    setTimeout(() => {
+      timerElement.classList.remove('shake');
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (timer <= 5 && timer > 0) {
+      handleTimerShake();
+    }
+  }, [timer]);
+
   return (
-    <div className="container">
+    <div className="flex flex-col items-center h-screen w-screen flex-grow rounded-lg shadow-lg bg-purple-950 justify-center md:justify-start ">
       {currentScreen === 'start' && (
-        <StartScreen onStartGame={handleStartGame} onRulesClick={handleRulesClick} />
+        // StartScreen component
+        <div className="flex flex-col items-center justify-center h-full start-screen">
+          <h1 className="text-white text-5xl font-bold">Ayy Eye!</h1>
+          <div className="flex flex-col items-center mt-20 start-buttons">
+            <Button className="p-10 px-20 bg-pink-400 rounded-10 mt-10 rules md:text-lg" onClick={handleRulesClick} >
+            ❓ Rules
+            </Button>
+            <Button className="bg-purple-600 text-white shadow-lg mt-10 start-game md:text-lg" onClick={handleStartGame} glitch>
+              Start Game
+            </Button>
+          </div>
+        </div>
       )}
 
       {currentScreen === 'game' && (
         <>
-          <div className="buttonContainer">
-            <div className="top-buttons">
-              <Button className="quit" onClick={handleBackClick}>
-                Quit
+          <div className="buttonContainer flex flex-col justify-evenly w-full px-8 pt-10">
+            <div className="top-buttons flex justify-between w-full pb-6">
+              <Button className="text-white bg-red-500 rounded-md w-32 quit" onClick={handleBackClick}>
+              ✌️  Quit
               </Button>
-              <Button className="rules" onClick={handleRulesClick}>
-                Rules
+              <Button className="text-white bg-purple-300 rounded-md w-32 rules" onClick={handleRulesClick}>
+              ❓ Rules
               </Button>
             </div>
 
-            <div className="timerButtons">
-              <Button className="moves" onClick={() => console.log('Moves button clicked')}>
-                Moves: {moves}
-              </Button>
-              <Button className="timer" onClick={() => console.log('Timer button clicked')}>
-                Timer: {timer}s
+            <div className="timerButtons flex justify-between w-full pb-6">
+              <ProgressBar
+                className="bg-gradient-to-r from-green-400 via-green-600 to-transparent bg-repeat-x bg-size-4 rounded-md w-32"
+                customLabel="Taps"
+                completed={moves}
+                minCompleted={0}
+                maxCompleted={5}
+              />
+              <Button className={`text-white bg-blue-400 rounded-md w-32 timer ${timer <= 5 && timer > 0 ? 'shake' : ''}`} onClick={() => console.log('Timer button clicked')}>
+                {timer <= 0 ? 'Time Up' : `Timer: ${timer}s`} ⏰
               </Button>
             </div>
           </div>
 
-          <div className="boxesContainer">
-            <div className="box">
-              <div onClick={(event) => handleImageClick(event, 'image1')}>
+          <div className="boxesContainer flex flex-col justify-evenly items-center w-full p-10 md:flex-row ">
+            <div className="box w-300 h-300 m-10 bg-bb006d rounded-10 shadow-2xl">
+              <div onClick={(event) => handleImageClick(event)}>
                 <ReactImageZoom
                   width={300}
                   height={300}
-                  zoomWidth={300}
+                  zoomWidth={100}
                   img={process.env.PUBLIC_URL + '/croc1.jpg'}
-                  zoomStyle={`z-index: 1000; position: absolute; bottom: 70%; top: 0; transform: translateX(10px);`}
+                  zoomStyle="z-index: 1000; position: absolute; top: 20px; bottom: 30px; left: 10px; border-radius: 100%; overflow: hidden;"
                 />
-          
                 {clickedCoordinates.map((coordinate, index) => {
-                  //according to clicked coordinates, a div displayes a circle over them 
                   if (coordinate.imageId === 'image1') {
                     return (
-                      <div key={index} className="circle" style={{ left: coordinate.x, top: coordinate.y }} />
+                      <div
+                        key={index}
+                        className="absolute left-0 top-0 w-10 h-10 border-2 border-green-400 rounded-full pointer-events-none transform-translate-x-[-50%] transform-translate-y-[-50%] circle"
+                        style={{ left: coordinate.x, top: coordinate.y }}
+                      />
                     );
                   }
                   return null;
                 })}
               </div>
             </div>
-            <div className="box">
-              <div onClick={(event) => handleImageClick(event, 'image2')}>
+            <div className="box w-300 h-300 m-10 bg-bb006d rounded-10 shadow-2xl">
+              <div onClick={(event) => handleImageClick(event)}>
                 <ReactImageZoom
                   width={300}
                   height={300}
-                  zoomWidth={200} //confirm zoom width
+                  zoomWidth={50}
                   img={process.env.PUBLIC_URL + '/croc2.jpg'}
-                  zoomStyle={`z-index: 1000; position: absolute; bottom: 70%; top: 0; transform: translateX(10px);`}
+                  zoomStyle="z-index: 1000; position: absolute; top: 20px; bottom: 30px; left: 10px; border-radius: 100%; overflow: hidden;"
                 />
                 {clickedCoordinates.map((coordinate, index) => {
                   if (coordinate.imageId === 'image2') {
                     return (
-                      <div key={index} className="circle" style={{ left: coordinate.x, top: coordinate.y }} />
+                      <div
+                        key={index}
+                        className="absolute left-0 top-0 w-10 h-10 border-2 border-green-400 rounded-full pointer-events-none transform-translate-x-[-50%] transform-translate-y-[-50%] circle"
+                        style={{ left: coordinate.x, top: coordinate.y }}
+                      />
                     );
                   }
                   return null;
@@ -174,25 +218,41 @@ const BoxContainer = () => {
             </div>
           </div>
 
-          <div className="buttonContainer">
-            <div className="bottom-buttons">
-              <Button className="button progress" onClick={() => console.log('Progress button clicked')}>
-                Progress: {progress}
-              </Button>
+          <div className="buttonContainer flex flex-col justify-evenly w-full px-8 pt-10">
+            <div className="bottom-buttons flex justify-between w-full px-8 pt-6 md:justify-start">
+              <ProgressBar
+                className="bg-gradient-to-r from-green-400 via-green-600 to-transparent bg-repeat-x bg-size-4 rounded-full w-full"
+                customLabel="Progress"
+                completed={progress}
+                minCompleted={0}
+                maxCompleted={5}
+              />
             </div>
           </div>
         </>
       )}
 
-      {currentScreen === 'rules' && <RulesScreen onBackClick={handleBackClick} />}
-
-      {gameOver && (
-        <div className="overlay">
-          <div className="alert-card">
-            <h2>Game Over</h2>
-            <p>Progress: {progress}</p>
-            <button className="button" onClick={handleBackClick}>
+      {currentScreen === 'game' && gameOver && (
+        <div className="overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-80 flex justify-center items-center">
+          <div className=" bg-green-600 border-2 border-gray-300 rounded-md shadow-md p-4 mt-5 text-center alert-card">
+            <h2 className="text-2xl mb-2">Game Over</h2>
+            <p className="text-lg mb-4">Progress: {progress}</p>
+            <button className="bg-blue-500 text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleBackClick}>
               Back To Start
+            </button>
+          </div>
+        </div>
+      )}
+
+      {currentScreen === 'rules' && (
+        <div className="overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-80 flex justify-center items-center">
+          <div className="bg-gray-500 border-2 border-gray-300 rounded-md shadow-md p-4 mt-5 text-center">
+            <h1 className="text-2xl mb-2"> 📌Game Rules</h1>
+            <p className="text-lg mb-4">👆Zoom and scroll the image to find the differences.</p>
+            <p className="text-lg mb-4">🎯You have 5 taps. Use them wisely!</p>
+            <p className="text-lg mb-4">⏰Whoever finds the most differences in 10 seconds, wins the round!</p>
+            <button className="bg-blue-500 text-black border-none rounded-md px-4 py-2 text-base cursor-pointer button back" onClick={handleBackClick}>
+              Back
             </button>
           </div>
         </div>
@@ -201,38 +261,14 @@ const BoxContainer = () => {
   );
 };
 
-const StartScreen = ({ onStartGame, onRulesClick }) => {
+const Button = ({ onClick, children, className, glitch }) => {
   return (
-    <div className="start-screen">
-      <h1>Ayy Eye!</h1>
-      <div className="start-buttons">
-        <Button className="rules" onClick={onRulesClick}>
-          Rules
-        </Button>
-        <Button className="start-game" onClick={onStartGame}>
-          Start Game
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const RulesScreen = ({ onBackClick }) => {
-  return (
-    <div>
-      <h2>Game Rules</h2>
-      <p>Write the rules for the game here.</p>
-      <button className="button back" onClick={onBackClick}>
-        Back
-      </button>
-    </div>
-  );
-};
-
-const Button = ({ onClick, children, className }) => {
-  return (
-    <button className={`button ${className}`} onClick={onClick}>
+    <button
+      className={`relative p-4 px-8 bg-gradient-to-r from-purple-500 to-purple-800 hover:from-purple-300 hover:to-purple-950 text-white text-sm font-semibold uppercase tracking-wide rounded-md shadow-lg overflow-hidden ${className} ${glitch ? 'glitch-animation' : ''}`}
+      onClick={onClick}
+    >
       {children}
+      <span></span>
     </button>
   );
 };
