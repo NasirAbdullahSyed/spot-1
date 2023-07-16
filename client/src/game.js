@@ -2,6 +2,12 @@ import React, { useState,useEffect, useMemo } from "react";
 import BoxContainer from "./uiScreen"; 
 import { useMultiplayerState, insertCoin, myPlayer, usePlayersList,onPlayerJoin } from 'playroomkit';
 
+
+import "./style.scss";
+
+// Image Processing
+import ImageUploader from "./ImageUploader";
+
 function Game(props) {
   const unsortedPlayers = usePlayersList();
 
@@ -204,7 +210,9 @@ const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
         initGame={initGame}
         jumpTo={jumpTo}
       ></History> */}
-      <BoxContainer {...state} squareClick={squareClick}></BoxContainer>
+//       <BoxContainer {...state} squareClick={squareClick}></BoxContainer>
+      {/* <Board {...state} squareClick={squareClick}></Board> */}
+
       {/* <Controller
         players={playerSymbols}
         width={state.width}
@@ -214,6 +222,8 @@ const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
         nextPlayer={state.nextPlayer}
         change={boardSizeChange}
       ></Controller> */}
+      <h1>App</h1>
+      <ImageUploader />
     </div>
   );
 }
