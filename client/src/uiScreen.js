@@ -172,7 +172,7 @@ const BoxContainer = () => {
                 <StaticButton 
                   onClick={handleBackClick}
                   text="Quit"
-                  extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[5rem]'}
+                  extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[4rem]'}
                 />
               </div>
               <div className='hidden sm:block text-white font-ps2p text-6xl sm:text-9xl'>
@@ -182,7 +182,7 @@ const BoxContainer = () => {
                 <StaticButton 
                     onClick={handleRulesClick}
                     text="Rules"
-                    extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[5rem]'}
+                    extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[4rem]'}
                 />
               </div>
             </div>
@@ -206,7 +206,7 @@ const BoxContainer = () => {
                     className={` timer ${timer <= 5 && timer > 0 ? 'shake' : ''}`} 
                     onClick={() => console.log('Timer button clicked')}
                     text={`${timer <= 0 ? 'OVER' : `⏰ ${timer}`}`}    
-                    extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[5rem]'}
+                    extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[4rem]'}
                 />
               </div>
             </div>
