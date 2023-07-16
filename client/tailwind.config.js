@@ -42,6 +42,9 @@ module.exports = {
         glitchChecked: 'glitch 5s infinite',
       },
     },
+    fontFamily: {
+      ps2p : ['Press Start 2P', 'cursive'],
+    }
   },
   plugins: [],
 }

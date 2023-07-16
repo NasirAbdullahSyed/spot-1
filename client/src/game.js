@@ -1,9 +1,5 @@
 import React, { useState,useEffect, useMemo } from "react";
-import Controller from "./controller";
-//import Board from "./gameContainer"; -changes
 import BoxContainer from "./uiScreen"; 
-// import History from "./history";
-import "./style.scss";
 import { useMultiplayerState, insertCoin, myPlayer, usePlayersList,onPlayerJoin } from 'playroomkit';
 
 function Game(props) {
@@ -198,7 +194,7 @@ const alphabetPool = "abcdefghijklmnopqrstuvwxyz";
 
 
   return (
-    <div className="game">
+    <div className="w-screen h-screen overflow-hidden">
       {/* <h1 className="game-title">
         SPOT {state.winPlayer ? "游戏结束" : ""}
       </h1> */}
