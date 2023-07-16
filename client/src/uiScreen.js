@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
-
-
+import {StarsCanvas} from './Stars';
 import ProgressBar from "@ramonak/react-progress-bar";
-import ReactImageZoom from 'react-image-zoom';
-import Zoom from 'react-img-zoom';
+//import ReactImageZoom from 'react-image-zoom';
+//import Zoom from 'react-img-zoom';
 // Components
 // --Buttons
 import StaticButton from './components/buttons/StaticButton'
@@ -21,6 +20,9 @@ const BoxContainer = () => {
   const [previousScreen, setPreviousScreen] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
+  const eyeContainerRef = useRef(null);
+  const [eyeRotation, setEyeRotation] = useState(0);
+
 
   //emojis for taps
      let emoji = "😃";
@@ -130,10 +132,29 @@ const BoxContainer = () => {
     }
   };
 
-  
+  useEffect(() => {
+        const handleMouseMove = (event) => {
+          const eyeContainer = eyeContainerRef.current;
+          if (eyeContainer) {
+            const eyeBounds = eyeContainer.getBoundingClientRect();
+            const eyeCenterX = eyeBounds.left + eyeBounds.width / 2;
+            const eyeCenterY = eyeBounds.top + eyeBounds.height / 2;
+            const rad = Math.atan2(event.clientX - eyeCenterX, event.clientY - eyeCenterY);
+            const deg = (rad * (180 / Math.PI) * -1) + 180;
+            setEyeRotation(deg);
+          }
+        };
+    
+        window.addEventListener('mousemove', handleMouseMove);
+    
+        return () => {
+          window.removeEventListener('mousemove', handleMouseMove);
+        };
+  }, []);
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center bg-black ">
+    <div className="h-screen w-screen flex flex-col items-center justify-center ">
+      <StarsCanvas/>
       {currentScreen === 'start' && (
         // StartScreen component
         <StartScreen
@@ -144,6 +165,12 @@ const BoxContainer = () => {
 
       {currentScreen === 'game' && (
         <>
+          <section className="move-area">
+            <div ref={eyeContainerRef} className="flex justify-center items-center flex-1 h-full">
+              <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
+              <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
+            </div>
+          </section>
           <div className='w-screen h-screen'>
             <div className='flex flex-row justify-between'>
               <div className='ml-5'>
