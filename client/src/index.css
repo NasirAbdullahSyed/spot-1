@@ -12,21 +12,20 @@
 .eye {
   position: relative;
   display: inline-block;
-  border-radius: 50%;
-  margin-top: 100px;
-  height: 20px; /* Adjust the size of the eye */
-  width: 20px; /* Adjust the size of the eye */
-  background: #CCC;
+  border-radius: 100%;
+  height: 3rem; /* Adjust the size of the eye */
+  width: 3rem; /* Adjust the size of the eye */
+  background: #fded00;
  
 }
 
 .eye:after {
   position: absolute;
-  bottom: 9px; /* Adjust the vertical position of the pupil */
-  right: 5px; /* Adjust the horizontal position of the pupil */
-  width: 6px; /* Adjust the size of the pupil */
-  height: 6px; /* Adjust the size of the pupil */
-  background: #000;
+  bottom: 1rem; /* Adjust the vertical position of the pupil */
+  right: 1rem; /* Adjust the horizontal position of the pupil */
+  width: 1rem; /* Adjust the size of the pupil */
+  height: 1rem; /* Adjust the size of the pupil */
+  background: #ff184c;
   border-radius: 50%;
   content: " ";
 }

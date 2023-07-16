@@ -137,8 +137,8 @@ const BoxContainer = () => {
           const eyeContainer = eyeContainerRef.current;
           if (eyeContainer) {
             const eyeBounds = eyeContainer.getBoundingClientRect();
-            const eyeCenterX = eyeBounds.left + eyeBounds.width / 2;
-            const eyeCenterY = eyeBounds.top + eyeBounds.height / 2;
+            const eyeCenterX = eyeBounds.left + eyeBounds.width / 20;
+            const eyeCenterY = eyeBounds.top + eyeBounds.height / 20;
             const rad = Math.atan2(event.clientX - eyeCenterX, event.clientY - eyeCenterY);
             const deg = (rad * (180 / Math.PI) * -1) + 180;
             setEyeRotation(deg);
@@ -165,20 +165,18 @@ const BoxContainer = () => {
 
       {currentScreen === 'game' && (
         <>
-          <section className="move-area">
-            <div ref={eyeContainerRef} className="flex justify-center items-center flex-1 h-full">
-              <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
-              <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
-            </div>
-          </section>
+          
           <div className='w-screen h-screen'>
-            <div className='flex flex-row justify-between'>
+            <div className='flex flex-row justify-evenly'>
               <div className='ml-5'>
                 <StaticButton 
                   onClick={handleBackClick}
                   text="Quit"
                   extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[5rem]'}
                 />
+              </div>
+              <div className='hidden sm:block text-white font-ps2p text-6xl sm:text-9xl'>
+                spot
               </div>
               <div className='mr-5'>
                 <StaticButton 
@@ -194,7 +192,7 @@ const BoxContainer = () => {
                   bgColor='#cc133c'
                   baseBgColor='#fded00'
                   height='3rem'
-                  width='10rem'
+                  width='30vw'
                   labelSize='2rem'
                   className="w-[7rem] mt-[1.5rem]"
                   customLabel={emoji}
@@ -212,10 +210,16 @@ const BoxContainer = () => {
                 />
               </div>
             </div>
+            <div className='flex justify-between '>
+              <div ref={eyeContainerRef} className="flex justify-center items-center flex-1 h-full">
+                <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
+                <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
+              </div>
+            </div>
             <div className="flex flex-col justify-center items-center md:flex-row ">
-              <div className="mt-5 w-[98%] border-4 rounded-lg border-[#fded00]">
+              <div className="mt-5 w-[98%] ">
                   <div onClick={(event) => handleImageClick(event)}>
-                      <img src='https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689443537/processed_R.jpg.png' className='rounded-lg'></img>
+                      <img src='https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689443537/processed_R.jpg.png' className='rounded-lg border-[#fded00] border-4'></img>
                       {clickedCoordinates.map((coordinate, index) => {
                         if (coordinate.imageId === 'image1') {
                           return (
@@ -230,9 +234,9 @@ const BoxContainer = () => {
                       })}
                   </div>
               </div>
-              <div className="mt-10 w-[98%] border-4 rounded-lg border-[#fded00]">
+              <div className="mt-5 w-[98%] ">
                   <div onClick={(event) => handleImageClick(event)}>
-                      <img src='https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689443537/processed_R.jpg.png' className='rounded-lg border-separate border-red-500'></img>
+                      <img src='https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689443537/processed_R.jpg.png' className='border-4 rounded-lg border-[#fded00]'></img>
                       {clickedCoordinates.map((coordinate, index) => {
                         if (coordinate.imageId === 'image1') {
                           return (
@@ -254,9 +258,9 @@ const BoxContainer = () => {
                   bgColor='#cc133c'
                   baseBgColor='#fded00'
                   height='4rem'
-                  width='22rem'
+                  width={['90vw']}
                   labelSize='3rem'
-                  className=" w-[90%] mt-[1.5rem]"
+                  className="mt-[1.5rem] overflow-hidden"
                   customLabel="🏆"
                   completed={progress}
                   minCompleted={0}
