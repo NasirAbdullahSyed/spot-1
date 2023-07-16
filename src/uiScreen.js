@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactImageZoom from 'react-image-zoom';
-import ProgressBar from "@ramonak/react-progress-bar";
+import ProgressBar from '@ramonak/react-progress-bar';
 import './index.css';
+import './eyes.css';
 
 const BoxContainer = () => {
   const [timer, setTimer] = useState(10);
@@ -12,43 +13,18 @@ const BoxContainer = () => {
   const [gameOver, setGameOver] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
-
+  const eyeContainerRef = useRef(null);
+  const [eyeRotation, setEyeRotation] = useState(0);
 
   //emojis for taps
-     let emoji = "😃";
+  let emoji = '😃';
   let emojiColor = null;
 
-  if(moves === 5)
-    emoji = "😃";
-  else if (moves === 4)
-    emoji = "😜";
-  else if(moves === 3)
-    emoji = "😅";
-  else if(moves === 2)
-    emoji = "😳";
-  else if(moves === 1)
-    emoji = "😔";
-
-    //re-rendering issues if using states
-  // if (moves === 5) {
-  //   setSelectedEmoji('😃');
-  //   emojiColor = 'darkgreen';
-  // } else if (moves === 4) {
-  //   setSelectedEmoji('😜');
-  //   emojiColor = 'lightgreen';
-  // } else if (moves === 3) {
-  //   setSelectedEmoji ('😅');
-  //   emojiColor = 'yellow';
-  // } else if (moves === 2) {
-  //   setSelectedEmoji('😳');
-  //   emojiColor = 'orange';
-  // } else if (moves === 1) {
-  //   setSelectedEmoji('🫣');
-  //   emojiColor = 'red';
-  // }
-
- //display emoji with moves
-  
+  if (moves === 5) emoji = '😃';
+  else if (moves === 4) emoji = '😜';
+  else if (moves === 3) emoji = '😅';
+  else if (moves === 2) emoji = '😳';
+  else if (moves === 1) emoji = '😔';
 
   useEffect(() => {
     let intervalId;
@@ -138,6 +114,26 @@ const BoxContainer = () => {
     }
   }, [timer]);
 
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const eyeContainer = eyeContainerRef.current;
+      if (eyeContainer) {
+        const eyeBounds = eyeContainer.getBoundingClientRect();
+        const eyeCenterX = eyeBounds.left + eyeBounds.width / 2;
+        const eyeCenterY = eyeBounds.top + eyeBounds.height / 2;
+        const rad = Math.atan2(event.clientX - eyeCenterX, event.clientY - eyeCenterY);
+        const deg = (rad * (180 / Math.PI) * -1) + 180;
+        setEyeRotation(deg);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col items-center h-screen w-screen flex-grow rounded-lg shadow-lg bg-purple-950 justify-center md:justify-start ">
       {currentScreen === 'start' && (
@@ -145,8 +141,8 @@ const BoxContainer = () => {
         <div className="flex flex-col items-center justify-center h-full start-screen">
           <h1 className="text-white text-5xl font-bold">Ayy Eye!</h1>
           <div className="flex flex-col items-center mt-20 start-buttons">
-            <Button className="p-10 px-20 bg-pink-400 rounded-10 mt-10 rules md:text-lg" onClick={handleRulesClick} >
-            ❓ Rules
+            <Button className="p-10 px-20 bg-pink-400 rounded-10 mt-10 rules md:text-lg" onClick={handleRulesClick}>
+              ❓ Rules
             </Button>
             <Button className="bg-purple-600 text-white shadow-lg mt-10 start-game md:text-lg" onClick={handleStartGame} glitch>
               Start Game
@@ -157,25 +153,34 @@ const BoxContainer = () => {
 
       {currentScreen === 'game' && (
         <>
+          <section className="move-area">
+          <div ref={eyeContainerRef} className="flex justify-center items-center flex-1 h-full">
+
+          <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
+              <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
+            </div>
+          </section>
           <div className="buttonContainer flex flex-col justify-evenly w-full px-8 pt-10">
             <div className="top-buttons flex justify-between w-full pb-6">
               <Button className="text-white bg-red-500 rounded-md w-32 quit" onClick={handleBackClick}>
-              ✌️  Quit
+                ✌️ Quit
               </Button>
               <Button className="text-white bg-purple-300 rounded-md w-32 rules" onClick={handleRulesClick}>
-              ❓ Rules
+                ❓ Rules
               </Button>
             </div>
-
             <div className="timerButtons flex justify-between w-full pb-6">
               <ProgressBar
                 className="bg-gradient-to-r from-green-400 via-green-600 to-transparent bg-repeat-x bg-size-4 rounded-md w-32"
-                customLabel= {emoji}
+                customLabel={emoji}
                 completed={moves}
                 minCompleted={0}
                 maxCompleted={5}
               />
-              <Button className={`text-white bg-blue-400 rounded-md w-32 timer ${timer <= 5 && timer > 0 ? 'shake' : ''}`} onClick={() => console.log('Timer button clicked')}>
+              <Button
+                className={`text-white bg-blue-400 rounded-md w-32 timer ${timer <= 5 && timer > 0 ? 'shake' : ''}`}
+                onClick={() => console.log('Timer button clicked')}
+              >
                 {timer <= 0 ? 'Time Up' : ` ${timer}s`} ⏰
               </Button>
             </div>
@@ -183,7 +188,7 @@ const BoxContainer = () => {
 
           <div className="boxesContainer flex flex-col justify-evenly items-center w-full p-10 md:flex-row ">
             <div className="box w-300 h-300 m-10 bg-bb006d rounded-10 shadow-2xl">
-              <div onClick={(event) => handleImageClick(event)}>
+              <div onClick={handleImageClick}>
                 <ReactImageZoom
                   width={300}
                   height={300}
@@ -206,7 +211,7 @@ const BoxContainer = () => {
               </div>
             </div>
             <div className="box w-300 h-300 m-10 bg-bb006d rounded-10 shadow-2xl">
-              <div onClick={(event) => handleImageClick(event)}>
+              <div onClick={handleImageClick}>
                 <ReactImageZoom
                   width={300}
                   height={300}
