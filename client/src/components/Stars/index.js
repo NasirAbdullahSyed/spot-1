@@ -1,11 +1,8 @@
-import { useState, useRef, Suspense } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Points, PointMaterial, Preload } from "@react-three/drei";
 import * as random from "maath/random/dist/maath-random.esm";
-import './index.css';
 
-
-
+import { Canvas, useFrame } from "@react-three/fiber";
+import { PointMaterial, Points, Preload } from "@react-three/drei";
+import { Suspense, useRef, useState } from "react";
 
 const Stars = (props) => {
   const ref = useRef();
@@ -47,4 +44,4 @@ const StarsCanvas = () => {
 
 
 export {StarsCanvas};
-//export default StarsCanvas;
+export default StarsCanvas;

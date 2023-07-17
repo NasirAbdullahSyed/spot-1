@@ -11,8 +11,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 
+// Cloudinary config (move to other file)
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.API_KEY, 
+  api_secret: process.env.API_SECRET 
+});
 
+// Replicate config (move to other file)
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN,
+});
 
 
 app.post('/process-image', async (req, res) => {

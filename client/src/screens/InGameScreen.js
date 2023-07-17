@@ -1,29 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './index.css';
-import {StarsCanvas} from './Stars';
+import React, { useEffect, useRef, useState } from 'react';
+
+import GameOverModal from '../components/modals/GameOverModal';
 import ProgressBar from "@ramonak/react-progress-bar";
+import RulesModal from '../components/modals/RulesModal';
 //import ReactImageZoom from 'react-image-zoom';
 //import Zoom from 'react-img-zoom';
 // Components
 // --Buttons
-import StaticButton from './components/buttons/StaticButton'
-// --Screens
-import StartScreen from './components/screens/StartScreen';
-import GameOver from './components/screens/GameOver';
-import Rules from './components/screens/RulesScreen';
+import StaticButton from '../components/buttons/StaticButton'
+import { navigate } from '../utils/MultiplayerReactRouter';
 
-const BoxContainer = () => {
+const InGameScreen = () => {
   const [timer, setTimer] = useState(10);
   const [moves, setMoves] = useState(5);
   const [progress, setProgress] = useState(0);
-  const [currentScreen, setCurrentScreen] = useState('start');
-  const [previousScreen, setPreviousScreen] = useState(null);
+  const [showRulesModal, setShowRulesModal] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
   const eyeContainerRef = useRef(null);
   const [eyeRotation, setEyeRotation] = useState(0);
-
-
+  
   //emojis for taps
      let emoji = "😃";
 
@@ -38,31 +34,13 @@ const BoxContainer = () => {
   else if(moves === 1)
     emoji = "😔";
 
-    //re-rendering issues if using states
-  // if (moves === 5) {
-  //   setSelectedEmoji('😃');
-  //   emojiColor = 'darkgreen';
-  // } else if (moves === 4) {
-  //   setSelectedEmoji('😜');
-  //   emojiColor = 'lightgreen';
-  // } else if (moves === 3) {
-  //   setSelectedEmoji ('😅');
-  //   emojiColor = 'yellow';
-  // } else if (moves === 2) {
-  //   setSelectedEmoji('😳');
-  //   emojiColor = 'orange';
-  // } else if (moves === 1) {
-  //   setSelectedEmoji('🫣');
-  //   emojiColor = 'red';
-  // }
-
  //display emoji with moves
   
 
   useEffect(() => {
     let intervalId;
 
-    if (currentScreen === 'game' && timer > 0 && moves > 0 && !gameOver) {
+    if (timer > 0 && moves > 0 && !gameOver) {
       intervalId = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
@@ -75,45 +53,7 @@ const BoxContainer = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [currentScreen, timer, moves, gameOver]);
-
-  const handleStartGame = () => {
-    setCurrentScreen('game');
-  };
-
-  const handleRulesClick = () => {
-    if (currentScreen === 'game') {
-      setPreviousScreen('game');
-    } else if (currentScreen === 'start') {
-      setPreviousScreen('start');
-    }
-    setCurrentScreen('rules');
-  };
-
-  const handleBackClick = () => {
-    if (currentScreen === 'rules') {
-      if (previousScreen === 'start') {
-        setCurrentScreen('start');
-      } else if (previousScreen === 'game') {
-        setCurrentScreen('game');
-      }
-    } else if (currentScreen === 'game') {
-      if (gameOver) {
-        setGameOver(false);
-        setCurrentScreen('start');
-        setTimer(10);
-        setMoves(5);
-        setProgress(0);
-        setClickedCoordinates([]);
-      } else {
-        setCurrentScreen('start');
-        setTimer(10);
-        setMoves(5);
-        setProgress(0);
-        setClickedCoordinates([]);
-      }
-    }
-  };
+  }, [timer, moves, gameOver]);
 
   const handleImageClick = (event) => {
     if (!gameOver) {
@@ -153,24 +93,11 @@ const BoxContainer = () => {
   }, []);
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center ">
-      <StarsCanvas/>
-      {currentScreen === 'start' && (
-        // StartScreen component
-        <StartScreen
-          handleStartGame={handleStartGame}
-          handleRulesClick={handleRulesClick}
-        />
-      )}
-
-      {currentScreen === 'game' && (
-        <>
-          
           <div className='w-screen h-screen'>
             <div className='flex flex-row justify-evenly'>
               <div className='ml-5'>
                 <StaticButton 
-                  onClick={handleBackClick}
+                  onClick={() => navigate("/")}
                   text="Quit"
                   extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[4rem]'}
                 />
@@ -180,7 +107,7 @@ const BoxContainer = () => {
               </div>
               <div className='mr-5'>
                 <StaticButton 
-                    onClick={handleRulesClick}
+                    onClick={() => setShowRulesModal(true)}
                     text="Rules"
                     extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[4rem]'}
                 />
@@ -268,23 +195,18 @@ const BoxContainer = () => {
                 />
               </div>
             </div>
+            {gameOver && (
+              <GameOverModal
+                progress={progress}
+                handleBackClick={() => navigate("/")}
+              />
+            )}
+            {showRulesModal && (
+              <RulesModal
+                handleBackClick={() => setShowRulesModal(false)}
+              />
+            )}
           </div>
-      </>
-      )}
-
-      {currentScreen === 'game' && gameOver && (
-        <GameOver
-          progress={progress}
-          handleBackClick={handleBackClick}
-        />
-      )}
-
-      {currentScreen === 'rules' && (
-        <Rules
-          handleBackClick={handleBackClick}
-        />
-      )}
-    </div>
   );
 };
-export default BoxContainer;
+export default InGameScreen;
