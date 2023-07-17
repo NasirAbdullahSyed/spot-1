@@ -133,11 +133,15 @@ app.post('/process-image', async (req, res) => {
     // Response
     res.status(200).json({ url1, spots });
   } catch (error) {
+    
     console.error('Error processing image:', error);
+    
+    // Error Response
     res.status(500).json({ error: 'Image processing failed.'});
   }
 });
 
+// Server
 app.listen(5000, () => {
   console.log('Server listening on port 5000');
 });
