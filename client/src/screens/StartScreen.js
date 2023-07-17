@@ -13,7 +13,7 @@ const StartScreen = () => {
         </div>
         <div className="flex flex-col mt-28 sm:flex-row">
           <StaticButton
-            onClick={() => navigate("game")}
+            onClick={() => navigate("load")}
             text="START"
           />
           <StaticButton

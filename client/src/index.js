@@ -12,9 +12,12 @@ import React, { useEffect, useState } from 'react'
 import InGameScreen from './screens/InGameScreen'
 import MainLayout from './layouts/MainLayout'
 import StartScreen from './screens/StartScreen'
+import LoadScreen from './screens/LoadScreen'
 import { createRoot } from 'react-dom/client'
 import navigationService from './utils/MultiplayerReactRouter/NavigationService'
 import { useMultiplayerState } from 'playroomkit'
+import axios from 'axios'
+import { navigate } from './utils/MultiplayerReactRouter'
 
 const GameRoutes = () => {
     const [router] = useMultiplayerState('router')
@@ -22,6 +25,36 @@ const GameRoutes = () => {
     // There may be a better way to access the history stack :p
     const [temp_history, setTempHistory] = useState([])
     const navigate = useNavigate()
+
+    // Image preloading
+    const [images, setImages] = useState([])
+    const [spots, setSpots] = useState([])
+    
+    
+
+    const preloadImages = async () => {
+        // Temporary files
+        const urls = [
+          "https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F1.jpg?alt=media&token=08546a29-aef0-44ba-b3f7-ceda035cfb70",
+          "https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F1.jpg?alt=media&token=08546a29-aef0-44ba-b3f7-ceda035cfb70"
+        ];
+      
+        try {
+          // API fetch call
+          const response = await axios.post("/process-image", {
+            images: urls
+          });
+      
+          console.log(response.data);
+          // Do something with the response data
+          setSpots(response.data.spots);
+          setImages(response.data.images);
+        } catch (error) {
+          console.error(error);
+        }
+        navigate("game")
+      };
+      
 
     useEffect(() => {
         navigationService.navigate = navigate
@@ -59,6 +92,7 @@ const GameRoutes = () => {
         <Routes>
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<StartScreen />} />
+                <Route path="load" element={<LoadScreen preloadImages={preloadImages} />} />
                 <Route path="game" element={<InGameScreen />} />
             </Route>
         </Routes>
