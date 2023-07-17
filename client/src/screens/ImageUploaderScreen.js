@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { storage, imageRef } from './firebase/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import React, { useEffect, useState } from 'react';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { imageRef, storage } from '../firebase/firebase';
+
 import axios from 'axios';
 const ImageUploader = () => {
   const [selectedImage, setSelectedImage] = useState(null);
