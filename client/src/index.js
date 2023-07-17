@@ -1,6 +1,5 @@
 import './index.css'
 
-// import Main, { Loading } from './main'
 import {
     MemoryRouter,
     Route,
@@ -9,19 +8,13 @@ import {
     useNavigate,
 } from 'react-router'
 import React, { useEffect, useState } from 'react'
-import { isHost, useMultiplayerState } from 'playroomkit'
 
-import Game from './game'
 import InGameScreen from './screens/InGameScreen'
 import MainLayout from './layouts/MainLayout'
 import StartScreen from './screens/StartScreen'
-// import GameSettingsScreen from './screens/GameSettings'
-// import InGame from './screens/TimeAttack/InGame'
-// import { LocalGameConfig } from './modules/LocalGameConfig'
-// import StartScreen from './screens/Start'
-// import WaitingForHostScreen from './screens/WaitingForHost'
 import { createRoot } from 'react-dom/client'
 import navigationService from './utils/MultiplayerReactRouter/NavigationService'
+import { useMultiplayerState } from 'playroomkit'
 
 const GameRoutes = () => {
     const [router] = useMultiplayerState('router')
@@ -65,31 +58,8 @@ const GameRoutes = () => {
         // AnimatePresence standard technique didn't work
         <Routes>
             <Route path="/" element={<MainLayout />}>
-                {/* <Route path="loading" element={<Loading />} /> */}
                 <Route index element={<StartScreen />} />
                 <Route path="game" element={<InGameScreen />} />
-                {/* <Route
-                    path="time-attack/new"
-                    element={
-                        isHost() ? (
-                            <GameSettingsScreen />
-                        ) : (
-                            <WaitingForHostScreen />
-                        )
-                    }
-                /> */}
-                {/* <Route path="time-attack/game" element={<InGame />} /> */}
-                {/* <Route
-                    path="battle-royale/new"
-                    element={
-                        isHost() ? (
-                            <GameSettingsScreen />
-                        ) : (
-                            <WaitingForHostScreen />
-                        )
-                    }
-                /> */}
-                {/* <Route path="battle-royale/game" element={<Game />} /> */}
             </Route>
         </Routes>
     )
