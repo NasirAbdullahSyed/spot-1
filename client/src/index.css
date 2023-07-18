@@ -4,10 +4,18 @@
 @tailwind components;
 @tailwind utilities;
 
-.font-ps2p {
-  font-family: 'Press Start 2P', cursive;
+* {
+  font-family: 'Press Start 2P', monospace;
+  user-select: none;
+  caret-shape: block;
+  -webkit-tap-highlight-color: transparent;
+  font-smooth: always;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
-  
+
+.font-ps2p {
+  font-family: 'Press Start 2P', monospace;
+}
 
 .eye {
   position: relative;
