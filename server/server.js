@@ -27,24 +27,24 @@ const replicate = new Replicate({
 app.post('/process-image', async (req, res) => {
   try {
     
-    const len1 = req.body.images.length;
-    console.log(len1)
+    // const len1 = req.body.images.length;
     // const urls = req.body.images;
     // const allSpots = [];
+    // const sizes = [];
     // for (let i = 0; i < len1; i++) {
     
     //   // Perform image processing using Jimp
     //   const image = await Jimp.read(urls[i]);
 
     //     // Get image dimensions
-    //     const width = image.getWidth();
-    //     const height = image.getHeight();
-
+    //     const width = image.getWidth() - 20;
+    //     const height = image.getHeight() - 20;
+    //     sizes.push([image.getWidth(),image.getHeight()]);
     //     // Create an array to store spot information
     //     const spots = [];
 
     //     // Task 1: Turn every pixel of the image to black
-    //     image.scan(0, 0, width, height, function (x, y, idx) {
+    //     image.scan(0, 0, image.getWidth(), image.getHeight(), function (x, y, idx) {
     //       this.bitmap.data[idx] = 0; // Red channel
     //       this.bitmap.data[idx + 1] = 0; // Green channel
     //       this.bitmap.data[idx + 2] = 0; // Blue channel
@@ -104,7 +104,7 @@ app.post('/process-image', async (req, res) => {
 
     //   // Image URL for modified image
     //   const url = cloudinaryResponse.secure_url;
-      
+    //   console.log(`url${i} = ${url}`)
       
     //   // Content Aware Filling using Replicate
     //   const output = await replicate.run(
@@ -114,8 +114,8 @@ app.post('/process-image', async (req, res) => {
     //         prompt: "Race Against the Clock",
     //         image: urls[i],
     //         mask: url,
-    //         height: height,
-    //         width: width,
+    //         height: image.getHeight(),
+    //         width: image.getWidth(),
     //       }
     //     }
     //   );
@@ -136,40 +136,63 @@ app.post('/process-image', async (req, res) => {
     //   allSpots.push(spots);
       
     //   // Logs for Testing
-      
     // }
-    // Response
+    // // Response
 
+    // console.log("const sizes = ", sizes);
+    // console.log("const urls = ", urls);
+    // console.log("const allSpots = ", allSpots);
     // Temp
-    const urls = [
+    const sizes =  [ [ 1024, 576 ], [ 1024, 576 ], [ 1024, 576 ], [ 1024, 576 ] ]
+    const urls =  [
       'https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F1.jpg?alt=media&token=08546a29-aef0-44ba-b3f7-ceda035cfb70',
-      'https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F1.jpg?alt=media&token=08546a29-aef0-44ba-b3f7-ceda035cfb70',
-      'https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689656109/processed_samples%252F1.jpg.png',
-      'https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689656118/processed_samples%252F1.jpg.png'
+      'https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F2.jpg?alt=media&token=69b596f0-dead-4bb4-9f4a-bd9e156946b0',
+      'https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F3.jpg?alt=media&token=bfe6b695-3bff-4ddd-a1bb-e4431345a84b',
+      'https://firebasestorage.googleapis.com/v0/b/spot-41cb1.appspot.com/o/samples%2F4.jpg?alt=media&token=fb67d9b3-a15a-4c2b-8adf-961e0677eacb',
+      'https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689683708/processed_samples%252F1.jpg.png',
+      'https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689683717/processed_samples%252F2.jpg.png',
+      'https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689683727/processed_samples%252F3.jpg.png',
+      'https://res.cloudinary.com/dbjuk1r7a/image/upload/v1689683736/processed_samples%252F4.jpg.png'
     ]
-    const allSpots = [
+    const allSpots =  [
       [
-        { x: 662, y: 195, width: 97, height: 64 },
-        { x: 92, y: 318, width: 84, height: 76 },
-        { x: 836, y: 453, width: 80, height: 62 },
-        { x: 917, y: 198, width: 94, height: 72 },
-        { x: 507, y: 259, width: 94, height: 66 },
-        { x: 950, y: 164, width: 92, height: 73 }
+        { x: 398, y: 50, width: 89, height: 64 },
+        { x: 913, y: 497, width: 84, height: 79 },
+        { x: 259, y: 21, width: 89, height: 78 },
+        { x: 303, y: 299, width: 81, height: 73 },
+        { x: 150, y: 234, width: 96, height: 77 },
+        { x: 736, y: 110, width: 92, height: 60 }
       ],
       [
-        { x: 984, y: 97, width: 89, height: 77 },
-        { x: 606, y: 239, width: 98, height: 78 },
-        { x: 727, y: 3, width: 95, height: 73 },
-        { x: 968, y: 565, width: 83, height: 68 },
-        { x: 685, y: 225, width: 91, height: 62 },
-        { x: 3, y: 427, width: 94, height: 75 }
+        { x: 406, y: 424, width: 85, height: 72 },
+        { x: 794, y: 183, width: 86, height: 72 },
+        { x: 364, y: 140, width: 90, height: 74 },
+        { x: 3, y: 515, width: 96, height: 75 },
+        { x: 375, y: 71, width: 88, height: 67 },
+        { x: 980, y: 155, width: 83, height: 66 }
+      ],
+      [
+        { x: 428, y: 330, width: 91, height: 60 },
+        { x: 277, y: 78, width: 88, height: 79 },
+        { x: 925, y: 54, width: 89, height: 73 },
+        { x: 813, y: 236, width: 99, height: 70 },
+        { x: 197, y: 152, width: 88, height: 79 },
+        { x: 284, y: 13, width: 80, height: 76 }
+      ],
+      [
+        { x: 476, y: 435, width: 89, height: 63 },
+        { x: 237, y: 437, width: 97, height: 70 },
+        { x: 645, y: 485, width: 93, height: 68 },
+        { x: 202, y: 104, width: 96, height: 66 },
+        { x: 413, y: 478, width: 98, height: 71 },
+        { x: 685, y: 107, width: 93, height: 70 }
       ]
     ]
 
 
     // console.log(urls)
     // console.log(allSpots)
-    res.status(200).json({ urls, allSpots });
+    res.status(200).json({sizes, urls, allSpots });
   } catch (error) {
     
     console.error('Error processing image:', error);

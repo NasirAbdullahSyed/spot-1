@@ -15,15 +15,18 @@ const StartScreen = () => {
           <StaticButton
             onClick={() => navigate("load")}
             text="START"
+            extraClasses={"h-9"}
           />
           <StaticButton
             onClick={() => setShowRulesModal(true)}
             text="Rules"
+            extraClasses={"h-9"}
         />
         </div>
         {showRulesModal && <RulesModal
           handleBackClick={() => setShowRulesModal(false)}
           closeOnClickOutside
+          
         />}
     </div>
   )

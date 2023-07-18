@@ -26,6 +26,7 @@ const GameRoutes = () => {
     const navigate = useNavigate()
 
     // Image preloading
+    const [sizes, setSizes] = useState([])
     const [images, setImages] = useState([])
     const [spots, setSpots] = useState([])
     
@@ -70,8 +71,8 @@ const GameRoutes = () => {
         <Routes>
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<StartScreen />} />
-                <Route path="load" element={<LoadScreen setImages={setImages} setSpots={setSpots}  />} />
-                <Route path="game" element={<InGameScreen spots = { spots } images = { images } />} />
+                <Route path="load" element={<LoadScreen setSizes={setSizes} setImages={setImages} setSpots={setSpots}  />} />
+                <Route path="game" element={<InGameScreen spots = { spots } images = { images } sizes = {sizes} />} />
             </Route>
         </Routes>
     )
