@@ -23,6 +23,7 @@ const StartScreen = () => {
         </div>
         {showRulesModal && <RulesModal
           handleBackClick={() => setShowRulesModal(false)}
+          closeOnClickOutside
         />}
     </div>
   )
