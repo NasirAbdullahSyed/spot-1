@@ -26,10 +26,13 @@ const LoadScreen = ({ setSizes, setImages, setSpots }) => {
           setSizes(response.data.sizes);
           setSpots(response.data.allSpots);
           setImages(response.data.urls);
+          setTimeout(() => {
+            navigate("game");
+          }, 3000);
       } catch (error) {
         console.error(error);
       }
-      navigate("game")
+      // navigate("game")
   };
 
   useEffect(() => {

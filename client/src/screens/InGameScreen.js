@@ -10,12 +10,13 @@ import StaticButton from '../components/buttons/StaticButton'
 import ProgressBar from "@ramonak/react-progress-bar";
 import { navigate } from '../utils/MultiplayerReactRouter';
 import Game from '../components/Game';
+import { set } from 'mongoose';
 
 const GameProgress = ({progress, totalProgress=6}) => {
   return (
     <ProgressBar
       bgColor='#cc133c'
-      baseBgColor='#fded00'
+      baseBgColor='#8d99ae'
       height='2rem'
       width='90vw'
       labelSize='1rem'
@@ -60,7 +61,7 @@ const HealthBar = ({health, totalHealth=10}) => {
   return (
     <ProgressBar
         bgColor='#cc133c'
-        baseBgColor='#fded00'
+        baseBgColor='#8d99ae'
         height='2rem'
         width='38vw'
         labelSize='1rem'
@@ -121,11 +122,10 @@ const InGameScreen = ({ sizes, spots, images }) => {
   const [timer, setTimer] = useState(0);
   const [moves, setMoves] = useState(6);
   const [progress, setProgress] = useState(0);
-  const [score, setScore] = useState([]);
   const [showRulesModal, setShowRulesModal] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [img, setImg] = useState([]);
-  
+  const [totalScore, setTotalScore] = useState(0);
   
   // alert(currentLevel)
   // alert(sizes.length)
@@ -153,11 +153,6 @@ const InGameScreen = ({ sizes, spots, images }) => {
       setProgress(0);
       setGameOver(false);
       setIsCountdownStarted(true);
-
-      const previousScores = score[currentLevel];
-      if (previousScores !== undefined) {
-        setScore(previousScores);
-      }
     }
   }, [currentLevel, totalLevels])
 
@@ -200,7 +195,7 @@ const InGameScreen = ({ sizes, spots, images }) => {
   }, [progress])
 
   const handleCorrectClick = () => {
-    setScore((prevScore) => prevScore + 1);
+    setTotalScore((prevScore) => prevScore + 1);
     setMoves((prevMoves) => Math.max(prevMoves - 1, 0));
     setProgress((prevProgress) => prevProgress + 1);
   };
@@ -210,11 +205,6 @@ const InGameScreen = ({ sizes, spots, images }) => {
   };
 
   const handleNextLevel = () => {
-    setScore((prevScores) => {
-      const updatedScores = [...prevScores];
-      updatedScores[currentLevel] = score;
-      return updatedScores;
-    });
     setCurrentLevel((prevLevel) => prevLevel + 1);
   }
 
@@ -270,7 +260,7 @@ const InGameScreen = ({ sizes, spots, images }) => {
             </div>
             {gameOver && (
               <GameOverModal
-                progress={progress}
+                score={totalScore}
                 handleBackClick={() => navigate("/")}
                 isLastLevel={isLastLevel}
                 handleNextLevel={handleNextLevel}
