@@ -29,7 +29,7 @@ const LoadScreen = ({ setSizes, setImages, setSpots }) => {
       } catch (error) {
         console.error(error);
       }
-      navigate("game")
+      // navigate("game")
   };
 
   useEffect(() => {
@@ -37,9 +37,14 @@ const LoadScreen = ({ setSizes, setImages, setSpots }) => {
   }, []);
   return (
     <div>
-        <div data-glitch="Loading..." className="custom-glitch text-xl sm:text-5xl" >
-            Loading...
-        </div>  
+        <div class="spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
     </div>
 
   );
