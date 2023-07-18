@@ -10,7 +10,6 @@ import StaticButton from '../components/buttons/StaticButton'
 import ProgressBar from "@ramonak/react-progress-bar";
 import { navigate } from '../utils/MultiplayerReactRouter';
 import Game from '../components/Game';
-import { set } from 'mongoose';
 
 const GameProgress = ({progress, totalProgress=6}) => {
   return (
