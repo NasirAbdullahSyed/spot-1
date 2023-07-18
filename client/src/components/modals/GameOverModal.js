@@ -8,12 +8,12 @@ const GameOverModal = ({ score, handleBackClick, isLastLevel, handleNextLevel, g
         <div className=" bg-[#ff184c] border-2 border-[#fded00] rounded-md shadow-md p-4 mt-5 text-center alert-card">
             <h2 className="text-2xl mb-2 font-ps2p">{gameOverText}</h2>
             <p className="text-lg mb-4 font-ps2p">Score: {score}</p>
-            <div className='flex flex-col sm:flex-row justify-evenly'>
-              <button className="bg-[#fded00] font-ps2p text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleBackClick}>
+            <div className='flex flex-col gap-4 sm:flex-row justify-evenly'>
+              <button className="bg-[#fded00] hover:scale-105 font-ps2p text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleBackClick}>
                   Back To Start
               </button>
               {!isLastLevel && (
-                <button className="bg-[#fded00] font-ps2p text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleNextLevel}>
+                <button className="bg-[#fded00] hover:scale-105 font-ps2p text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleNextLevel}>
                   Next Level
                 </button>
               )}
