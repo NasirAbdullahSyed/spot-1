@@ -29,7 +29,7 @@ const LoadScreen = ({ setSizes, setImages, setSpots }) => {
       } catch (error) {
         console.error(error);
       }
-      // navigate("game")
+      navigate("game")
   };
 
   useEffect(() => {
