@@ -12,7 +12,7 @@ const GameOverModal = ({ progress, handleBackClick, isLastLevel, handleNextLevel
               <button className="bg-[#fded00] font-ps2p text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleBackClick}>
                   Back To Start
               </button>
-              {isLastLevel !== 3 && (
+              {!isLastLevel && (
                 <button className="bg-[#fded00] font-ps2p text-black border-none rounded-md px-4 py-2 text-base cursor-pointer Back" onClick={handleNextLevel}>
                   Next Level
                 </button>
