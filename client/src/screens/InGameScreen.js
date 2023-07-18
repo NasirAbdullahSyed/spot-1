@@ -9,8 +9,10 @@ import RulesModal from '../components/modals/RulesModal';
 // --Buttons
 import StaticButton from '../components/buttons/StaticButton'
 import { navigate } from '../utils/MultiplayerReactRouter';
+import { i } from 'maath/dist/index-43782085.esm';
+import { set } from 'mongoose';
 
-const InGameScreen = () => {
+const InGameScreen = ({ spots, images }) => {
   const [timer, setTimer] = useState(10);
   const [moves, setMoves] = useState(5);
   const [progress, setProgress] = useState(0);
@@ -20,6 +22,11 @@ const InGameScreen = () => {
   const eyeContainerRef = useRef(null);
   const [eyeRotation, setEyeRotation] = useState(0);
   
+  
+  // console.log("Inside Game Screen")
+  // console.log(images);
+  // console.log(spots);
+
   //emojis for taps
      let emoji = "😃";
 
@@ -91,6 +98,7 @@ const InGameScreen = () => {
           window.removeEventListener('mousemove', handleMouseMove);
         };
   }, []);
+  
 
   return (
           <div className='w-screen h-screen'>
@@ -101,9 +109,6 @@ const InGameScreen = () => {
                   text="Quit"
                   extraClasses={'w-[7rem] h-[3rem] sm:w-[10rem] sm:h-[4rem]'}
                 />
-              </div>
-              <div className='hidden sm:block text-white font-ps2p text-6xl sm:text-9xl'>
-                spot
               </div>
               <div className='mr-5'>
                 <StaticButton 
@@ -137,12 +142,12 @@ const InGameScreen = () => {
                 />
               </div>
             </div>
-            <div className='flex justify-between '>
+            {/* <div className='flex justify-between '>
               <div ref={eyeContainerRef} className="flex justify-center items-center flex-1 h-full">
                 <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
                 <div className="eye" style={{ transform: `rotate(${eyeRotation}deg)` }}></div>
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col justify-center items-center md:flex-row ">
               <div className="mt-5 w-[98%] ">
                   <div onClick={(event) => handleImageClick(event)}>
@@ -184,9 +189,9 @@ const InGameScreen = () => {
                 <ProgressBar
                   bgColor='#cc133c'
                   baseBgColor='#fded00'
-                  height='4rem'
+                  height='3rem'
                   width={['90vw']}
-                  labelSize='3rem'
+                  labelSize='2rem'
                   className="mt-[1.5rem] overflow-hidden"
                   customLabel="🏆"
                   completed={progress}
