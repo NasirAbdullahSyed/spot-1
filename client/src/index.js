@@ -38,7 +38,7 @@ const GameRoutes = () => {
             if (
                 temp_history.find((entry) => {
                     return (
-                        entry.state?.actionTimestamp === router.actionTimestamp
+                        entry.state?.actionTimestamp === router.state.actionTimestamp
                     )
                 })
             ) {
@@ -47,8 +47,8 @@ const GameRoutes = () => {
                 )
             } else {
                 console.info('[Router] New state. Change!')
-                const { props, actionTimestamp } = router
-                navigate(router.state, { ...props, actionTimestamp })
+                const {route, state} = router;
+                navigate(route, { state })
             }
         }
     }, [router])
