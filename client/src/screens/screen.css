@@ -1,92 +1,58 @@
-.custom-glitch {
-    position: relative;
-    font-weight: 700;
-    line-height: 1.2;
-    color: #fff;
-    letter-spacing: 5px;
-    z-index: 1;
-    animation: shift 1s ease-in-out infinite alternate;
+.spinner {
+  width: 10rem;
+  height: 10rem;
+  --clr: #ff184c;
+  --clr-alpha: #ff184e28;
+  animation: spinner 1.6s infinite ease;
+  transform-style: preserve-3d;
+}
+
+.spinner > div {
+  background-color: var(--clr-alpha);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  border: 3.5px solid var(--clr);
+}
+
+.spinner div:nth-of-type(1) {
+  transform: translateZ(-35.2px) rotateY(180deg);
+}
+
+.spinner div:nth-of-type(2) {
+  transform: rotateY(-270deg) translateX(50%);
+  transform-origin: top right;
+}
+
+.spinner div:nth-of-type(3) {
+  transform: rotateY(270deg) translateX(-50%);
+  transform-origin: center left;
+}
+
+.spinner div:nth-of-type(4) {
+  transform: rotateX(90deg) translateY(-50%);
+  transform-origin: top center;
+}
+
+.spinner div:nth-of-type(5) {
+  transform: rotateX(-90deg) translateY(50%);
+  transform-origin: bottom center;
+}
+
+.spinner div:nth-of-type(6) {
+  transform: translateZ(35.2px);
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
   }
-  
-  .custom-glitch:before,
-  .custom-glitch:after {
-    display: block;
-    content: attr(data-glitch);
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0.8;
+
+  50% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
   }
-  
-  .custom-glitch:before {
-    animation: custom-glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-    color: #fded00;
-    z-index: -1;
+
+  100% {
+    transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
   }
-  
-  .custom-glitch:after {
-    animation: custom-glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
-    color: #ff184c;
-    z-index: -2;
-  }
-  
-  @keyframes custom-glitch {
-    0% {
-      transform: translate(0);
-    }
-  
-    20% {
-      transform: translate(-3px, 3px);
-    }
-  
-    40% {
-      transform: translate(-3px, -3px);
-    }
-  
-    60% {
-      transform: translate(3px, 3px);
-    }
-  
-    80% {
-      transform: translate(3px, -3px);
-    }
-  
-    to {
-      transform: translate(0);
-    }
-  }
-  
-  @keyframes shift {
-    0%, 40%, 44%, 58%, 61%, 65%, 69%, 73%, 100% {
-      transform: skewX(0deg);
-    }
-  
-    41% {
-      transform: skewX(10deg);
-    }
-  
-    42% {
-      transform: skewX(-10deg);
-    }
-  
-    59% {
-      transform: skewX(40deg) skewY(10deg);
-    }
-  
-    60% {
-      transform: skewX(-40deg) skewY(-10deg);
-    }
-  
-    63% {
-      transform: skewX(10deg) skewY(-5deg);
-    }
-  
-    70% {
-      transform: skewX(-50deg) skewY(-20deg);
-    }
-  
-    71% {
-      transform: skewX(10deg) skewY(-10deg);
-    }
-  }
-  
+}
