@@ -121,28 +121,27 @@ const InGameScreen = ({ sizes, spots, images }) => {
   const [timer, setTimer] = useState(0);
   const [moves, setMoves] = useState(6);
   const [progress, setProgress] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState([]);
   const [showRulesModal, setShowRulesModal] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const img = [
-    images[currentLevel],
-    images[currentLevel+sizes.length]
-  ];
+  const [img, setImg] = useState([]);
+  
   
   // alert(currentLevel)
   // alert(sizes.length)
 
-  const totalLevels = 4 
-                    // sizes.length;
+  const totalLevels = sizes.length;
   
   useEffect(() => {
     setGameOver(false);
-    if (currentLevel >= totalLevels) {
+    const img = [images[currentLevel], images[currentLevel + sizes.length]];
+    setImg(img);
+    if (currentLevel === totalLevels) {
       setGameOver(true);
       setIsCountdownStarted(false);
     } else if (currentLevel < totalLevels) {
       if (currentLevel === 0) {
-        setTimer(10);
+        setTimer(40);
       } else if (currentLevel === 1) {
         setTimer(30);
       } else if (currentLevel === 2) {
@@ -152,9 +151,13 @@ const InGameScreen = ({ sizes, spots, images }) => {
       }
       setMoves(10);
       setProgress(0);
-      setScore(0);
       setGameOver(false);
       setIsCountdownStarted(true);
+
+      const previousScores = score[currentLevel];
+      if (previousScores !== undefined) {
+        setScore(previousScores);
+      }
     }
   }, [currentLevel, totalLevels])
 
@@ -185,9 +188,16 @@ const InGameScreen = ({ sizes, spots, images }) => {
   useEffect(() => {
     if (moves <= 0) {
       setGameOver(true);
+      setIsCountdownStarted(false)
     }
   }, [moves])
 
+  useEffect(() => {
+    if (progress === 6) {
+      setGameOver(true);
+      setIsCountdownStarted(false)
+    }
+  }, [progress])
 
   const handleCorrectClick = () => {
     setScore((prevScore) => prevScore + 1);
@@ -200,10 +210,15 @@ const InGameScreen = ({ sizes, spots, images }) => {
   };
 
   const handleNextLevel = () => {
+    setScore((prevScores) => {
+      const updatedScores = [...prevScores];
+      updatedScores[currentLevel] = score;
+      return updatedScores;
+    });
     setCurrentLevel((prevLevel) => prevLevel + 1);
   }
 
-  const isLastLevel = currentLevel === totalLevels;
+  const isLastLevel = currentLevel === totalLevels - 1;
   const gameOverText = isLastLevel ? "Game Over" : "Level Over";
 
   return (
@@ -255,7 +270,7 @@ const InGameScreen = ({ sizes, spots, images }) => {
             </div>
             {gameOver && (
               <GameOverModal
-                progress={score}
+                progress={progress}
                 handleBackClick={() => navigate("/")}
                 isLastLevel={isLastLevel}
                 handleNextLevel={handleNextLevel}

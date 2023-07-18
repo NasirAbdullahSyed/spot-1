@@ -1,9 +1,10 @@
 // Core game mechanics
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Game = ({onCorrectClick, onWrongClick, gameOver, spots, images, sizes }) => {
   const [clickedCoordinates, setClickedCoordinates] = useState([]);  
+  
   
   const isInSpot = (x, y, spots) => {
     for (let i = 0; i < spots.length; i++) {
@@ -21,22 +22,26 @@ const Game = ({onCorrectClick, onWrongClick, gameOver, spots, images, sizes }) =
   const handleImageClick = (event) => {
       if (!gameOver) {
         
+        // console.log('spots = ', spots)
+        
         const clientWidth = document.getElementById('img1').clientWidth;
         const clientHeight = document.getElementById('img1').clientHeight;
         
         const scaleX = sizes[0] / clientWidth;
         const scaleY = sizes[1] / clientHeight;
         
+        
         let currentTargetRect = event.currentTarget.getBoundingClientRect();
         const event_offsetX = scaleX*(event.pageX - currentTargetRect.left);
         const event_offsetY = scaleY*(event.pageY - currentTargetRect.top);
         // console.log(`Event offset X: ${event_offsetX}, \nEvent offset Y: ${event_offsetY}`);
         
-        if (isInSpot(event_offsetX, event_offsetY, spots[0])) {
+        if (isInSpot(event_offsetX, event_offsetY, spots)) {
           const newCoordinates = [
             { x: event.clientX, y: event.clientY, imageId: 'image1' },
           ];
           setClickedCoordinates((prevCoordinates) => [...prevCoordinates, ...newCoordinates]);
+          // console.log('Correct spot clicked');
           onCorrectClick();
         } else {
           // console.log('Wrong spot clicked');
@@ -44,10 +49,8 @@ const Game = ({onCorrectClick, onWrongClick, gameOver, spots, images, sizes }) =
         }
 
         // console.log(offsetX, offsetY);
-        // onClick && onClick(event)
-
-  
-        
+      } else {
+        setClickedCoordinates([]);
       }
     };
     return (
@@ -78,7 +81,7 @@ const Game = ({onCorrectClick, onWrongClick, gameOver, spots, images, sizes }) =
                               <div
                                   key={index}
                                   className="absolute left-0 top-0 w-10 h-10 border-2 border-green-400 rounded-full pointer-events-none transform-translate-x-[-50%] transform-translate-y-[-50%] circle"
-                                  style={{ left: coordinate.x, top: coordinate.y }}
+                                  style={{ left: coordinate.x, top: coordinate.y, transform: 'translate(-50%, -50%)' }}
                               />
                           );
                         }
