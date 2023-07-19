@@ -12,9 +12,11 @@ import React, { useEffect, useState } from 'react'
 import InGameScreen from './screens/InGameScreen'
 import MainLayout from './layouts/MainLayout'
 import StartScreen from './screens/StartScreen'
+import LoadScreen from './screens/LoadScreen'
 import { createRoot } from 'react-dom/client'
 import navigationService from './utils/MultiplayerReactRouter/NavigationService'
 import { useMultiplayerState } from 'playroomkit'
+
 
 const GameRoutes = () => {
     const [router] = useMultiplayerState('router')
@@ -22,6 +24,16 @@ const GameRoutes = () => {
     // There may be a better way to access the history stack :p
     const [temp_history, setTempHistory] = useState([])
     const navigate = useNavigate()
+
+    // Image preloading
+    const [sizes, setSizes] = useState([])
+    const [images, setImages] = useState([])
+    const [spots, setSpots] = useState([])
+    
+    
+
+    
+      
 
     useEffect(() => {
         navigationService.navigate = navigate
@@ -59,7 +71,8 @@ const GameRoutes = () => {
         <Routes>
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<StartScreen />} />
-                <Route path="game" element={<InGameScreen />} />
+                <Route path="load" element={<LoadScreen setSizes={setSizes} setImages={setImages} setSpots={setSpots}  />} />
+                <Route path="game" element={<InGameScreen spots = { spots } images = { images } sizes = {sizes} />} />
             </Route>
         </Routes>
     )

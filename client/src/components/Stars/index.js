@@ -12,7 +12,6 @@ const Stars = (props) => {
     ref.current.rotation.x -= delta / 10;
     ref.current.rotation.y -= delta / 15;
   });
-  console.log(sphere);
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
@@ -31,7 +30,7 @@ const Stars = (props) => {
 
 const StarsCanvas = () => {
   return (
-    <div className='w-full h-auto absolute inset-0 z-[-1] bg-black'>
+    <div className='w-screen h-screen absolute inset-0 z-[-1] bg-black'>
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
           <Stars />
